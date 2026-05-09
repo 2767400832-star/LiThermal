@@ -197,11 +197,11 @@ void HAL::init()
     static lv_disp_drv_t disp_drv;
     static lv_color_t *buf;
     lv_disp_drv_init(&disp_drv);
-    disp_drv.hor_res = 320;
-    disp_drv.ver_res = 240;
+    disp_drv.hor_res = 240;
+    disp_drv.ver_res = 320;
     disp_drv.draw_buf = &lv_drawbuf;
     printf("Running On Device\n");
-    uint32_t rotated = LV_DISP_ROT_NONE;
+    uint32_t rotated = LV_DISP_ROT_90;
 
     /*Linux frame buffer device init*/
     sunxifb_init(rotated);
@@ -225,7 +225,7 @@ void HAL::init()
     disp_drv.rotated = rotated;
     lv_disp_drv_register(&disp_drv);
     initInputDevices();
-    lv_disp_draw_buf_init(&lv_drawbuf, buf, NULL, 320 * 240 * 4);
+    lv_disp_draw_buf_init(&lv_drawbuf, buf, NULL, 240 * 320 * 4);
     signal(SIGINT, signal_exit);
     // HAL 线程
     pthread_create(&thread_hal, NULL, thread_hal_func, NULL);
