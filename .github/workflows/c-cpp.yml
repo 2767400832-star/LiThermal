@@ -1,0 +1,35 @@
+name: LiThermal 固件自动编译
+
+on:
+  # 当你提交代码到master分支时，自动触发编译
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      # 1. 拉取你的项目代码（包括子模块）
+      - name: 拉取代码
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      # 2. 安装编译依赖
+      - name: 安装依赖
+        run: |
+          sudo apt update
+          sudo apt install -y build-essential cmake git libusb-dev
+
+      # 3. 执行项目编译脚本
+      - name: 编译固件
+        run: |
+          chmod +x build.sh
+          ./build.sh
+
+      # 4. 上传编译好的固件（方便下载）
+      - name: 上传固件
+        uses: actions/upload-artifact@v4
+        with:
+          name: LiThermal-固件
+          path: output/*.img
